@@ -13,4 +13,9 @@ public class Result extends AppCompatActivity {
         Toast.makeText(this, "THis is second activity", Toast.LENGTH_SHORT).show();
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
