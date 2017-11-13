@@ -1,6 +1,8 @@
 package com.example.zeeshan.sir_tictactoo;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +16,11 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
 
+    DbHelper dbHelper;
     public static   int player_1_Score=0;
     public static   int player_2_Score=0;
 
+    int score1=0,score2=0;
     int activePlayer=0;
     int[] gamestate={2,2,2,2,2,2,2,2,2,2};
     int[][] winingPosition={{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mImageView[7] = (ImageView) findViewById(R.id.imageView7);
         mImageView[8] = (ImageView) findViewById(R.id.imageView8);
 
+        dbHelper=new DbHelper(this);
     }
 
 
@@ -93,9 +98,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
     public void setDrawableNull(){
         for(int i=0;i<9;i++){
             gamestate[i]=2;
@@ -122,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "Restart", Toast.LENGTH_SHORT).show();
                 setDrawableNull();
             }
         });
@@ -132,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"You clicked over No",Toast.LENGTH_SHORT).show();
             }
         });
-        alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
-            }
-        });
+//        alertDialogBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Toast.makeText(getApplicationContext(),"You clicked on Cancel",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -146,6 +147,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void scoreFun(View view) {
 
 
+
+
+    Intent intent=new Intent(getApplicationContext(),Result.class);
+
+    intent.putExtra("player_1_Score",player_1_Score);
+    intent.putExtra("player_2_Score",player_2_Score);
+
+    startActivity(intent);
+
+
+ }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+        dbHelper=new DbHelper(this);
+
+        try{
+            Cursor cursor=dbHelper.lisetRecord();
+            if(cursor.moveToFirst()){
+
+                score1= Integer.valueOf(cursor.getString(cursor.getColumnIndex("player1")));
+                score2= Integer.valueOf(cursor.getString(cursor.getColumnIndex("player2")));
+
+
+            }
+        }catch (Exception e){
+
+        }
+
+        player_1_Score=player_1_Score+score1;
+        player_2_Score=player_2_Score+score2;
+
+        //inserts score into database
+        Integer value =dbHelper.insertScore(player_1_Score,player_2_Score);
+        if(value>0)
+            Toast.makeText(this, "Successfully inserted", Toast.LENGTH_SHORT).show();
+
+        // Intent intent=new Intent(getApplicationContext(),Result.class);
+        // /startActivity(intent);
+
+    }
+
+    public void resetFun(View view) {
+        setDrawableNull();
+    }
 }

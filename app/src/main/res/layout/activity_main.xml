@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.zeeshan.sir_tictactoo.MainActivity">
+<LinearLayout
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <Button
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Score"
+        android:onClick="scoreFun"/>
+    <Button
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Restart"
+        android:onClick="resetFun"/>
 
-    <GridLayout
+
+</LinearLayout>
+     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -78,7 +101,7 @@
             android:tag="6"
             android:padding="10dp"
             android:onClick="drop"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/imageView6"
             android:layout_width="125dp"
             android:layout_height="150dp"
@@ -87,7 +110,7 @@
             android:tag="7"
             android:padding="10dp"
             android:onClick="drop"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/imageView7"
             android:layout_width="125dp"
             android:layout_height="150dp"
@@ -97,11 +120,11 @@
             android:tag="8"
             android:padding="10dp"
             android:onClick="drop"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/imageView8"
             android:layout_width="125dp"
             android:layout_height="150dp"
             />
 
     </GridLayout>
-</RelativeLayout>
+</LinearLayout>
